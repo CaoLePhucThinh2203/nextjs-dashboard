@@ -7,16 +7,9 @@ export const metadata: Metadata = {
     template: '%s | Acme Dashboard',
     default: 'Acme Dashboard',
   },
-  description: 'The official Next.js Course Dashboard, built with App Router.',
+  description: 'The official Next.js Learn Dashboard built with App Router.',
   metadataBase: new URL('https://next-learn-dashboard.vercel.sh'),
-  openGraph: {
-    title: 'Acme Dashboard',
-    description: 'Manage your invoices and customers',
-    images: ['opengraph-image.png'], 
-    type: 'website',
-  },
 };
-
 export default function RootLayout({
   children,
 }: {

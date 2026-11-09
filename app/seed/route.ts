@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import postgres from 'postgres';
 import { invoices, customers, revenue, users } from '../lib/placeholder-data';
-import { users as placeholder_users } from '@/app/lib/placeholder-data';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -103,25 +102,16 @@ async function seedRevenue() {
 }
 
 export async function GET() {
-  // Tạo bảng
-  await sql`
-    CREATE TABLE IF NOT EXISTS users (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      email TEXT UNIQUE NOT NULL,
-      password TEXT NOT NULL
-    );
-  `;
+  try {
+    const result = await sql.begin((sql) => [
+      seedUsers(),
+      seedCustomers(),
+      seedInvoices(),
+      seedRevenue(),
+    ]);
 
-  // Chèn dữ liệu — hash password trước khi lưu
-  for (const user of placeholder_users) {
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-    await sql`
-      INSERT INTO users (id, name, email, password)
-      VALUES (${user.id}, ${user.name}, ${user.email}, ${hashedPassword})
-      ON CONFLICT (id) DO NOTHING;
-    `;
+    return Response.json({ message: 'Database seeded successfully' });
+  } catch (error) {
+    return Response.json({ error }, { status: 500 });
   }
-
-  return Response.json({ message: 'Database seeded successfully' });
 }
