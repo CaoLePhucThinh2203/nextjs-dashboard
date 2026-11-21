@@ -34,5 +34,5 @@ This project was built following the Next.js App Router curriculum, covering cor
 ├── public/                 # Static assets (images, hero illustrations)
 ├── auth.config.ts          # Edge-compatible NextAuth route configuration
 ├── auth.ts                 # NextAuth Node.js configuration & Credentials provider
-├── middleware.ts           # Route protection middleware
+├── proxy.ts                # Route protection proxy
 └── next.config.ts / .mjs   # Next.js configuration
